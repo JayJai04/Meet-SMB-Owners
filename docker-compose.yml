@@ -1,0 +1,46 @@
+# Defines the services (containers) that make up our application.
+services:
+  # This is the service for our PostgreSQL database.
+  postgres:
+    # We'll use the official PostgreSQL image, version 14.
+    image: postgres:14
+    # This ensures the container restarts automatically if it crashes.
+    restart: always
+    # Environment variables to configure the PostgreSQL container.
+    environment:
+      POSTGRES_DB: smb_local_connect_db  # The name of the database to create.
+      POSTGRES_USER: user               # The username to connect with.
+      POSTGRES_PASSWORD: password       # The password for the user.
+    # This "maps" the port inside the container (5432) to a port on your local machine.
+    ports:
+      - '5432:5432'
+    # This stores the database data on your local machine so it persists even if the container is removed.
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+
+  # This is an optional but VERY helpful service. It's a web-based GUI to view our database.
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - '5050:80'
+  community-service:
+    build:
+      context: ./services/community-service
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    depends_on:
+      - postgres
+      - pgadmin
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+    volumes:
+      - ./services/community-service:/usr/src/app
