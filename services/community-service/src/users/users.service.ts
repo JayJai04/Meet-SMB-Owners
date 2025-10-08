@@ -3,7 +3,7 @@
 import { Injectable, ConflictException, NotFoundException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from './user.entity';
+import { User } from './users.entity';
 import * as bcrypt from 'bcrypt'; // We'll need bcrypt for password hashing
 
 @Injectable() // This decorator marks the class as a provider that can be managed by NestJS DI container.

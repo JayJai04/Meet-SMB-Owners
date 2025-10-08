@@ -1,8 +1,11 @@
-import { Controller, Post, Body, Req } from '@nestjs/common'
-import { GroupsService } from './groups.service'
-import { CreateGroupDto} from './dto/create-group.dto'
-import { User } from '../users/user.entity'
-import { Group } from './groups.entity'
+import { Controller, Post, Get, Body, Param, UseGuards } from '@nestjs/common';
+import { GroupsService } from './groups.service';
+import { CreateGroupDto} from './dto/create-group.dto';
+import { User } from '../users/users.entity';
+import { Group } from './entities/groups.entity';
+import { GroupMember } from './entities/group-members.entity';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { GetUser } from '../auth/get-user.decorator'
 
 @Controller('groups')
 export class GroupsController {
@@ -11,9 +14,20 @@ export class GroupsController {
     ) {}
 
     @Post()
-    async create(@Body() createGroupDto: CreateGroupDto, @Req() request: Request): Promise<Group> {
-        const tempUser = { id : "096516e8-c806-464d-95b3-9126a80ec395"} //for testing
-        // user = new User(this.request)
-        return this.groupsService.create(createGroupDto, tempUser as User);
+    @UseGuards(JwtAuthGuard)
+    async createOrJoin(@Body() createGroupDto: CreateGroupDto, @GetUser() user: User) {
+        return this.groupsService.createOrJoin(createGroupDto, user);
+    }
+
+    @Get('my-groups')
+    @UseGuards(JwtAuthGuard)
+    async getMyGroups(@GetUser() user: User): Promise<Group[]> {
+        return this.groupsService.getUserGroups(user.id);
+    }
+
+    @Get(':groupId/members')
+    @UseGuards(JwtAuthGuard)
+    async getGroupMembers(@Param('groupId') groupId: string): Promise<GroupMember[]> {
+        return this.groupsService.getGroupMembers(groupId);
     }
 }

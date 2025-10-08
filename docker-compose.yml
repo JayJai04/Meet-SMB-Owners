@@ -42,5 +42,6 @@ services:
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_DATABASE: ${DB_DATABASE}
+      JWT_PASSWORD: ${JWT_PASSWORD}
     volumes:
       - ./services/community-service:/usr/src/app
