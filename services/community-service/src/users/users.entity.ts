@@ -21,6 +21,9 @@ import {
   
     @Column({ nullable: true }) // We make this nullable (optional) as per our OpenAPI spec.
     firstName: string;
+
+    @Column({ name: 'cityid', nullable: true }) // City ID for location-based grouping
+    cityId: number;
   
     @CreateDateColumn() // This column will automatically be set to the date/time the user was created.
     createdAt: Date;

@@ -10,16 +10,16 @@ export class City {
   @Column({ type: 'varchar', length: 255 })
   name: string;
 
-  @Column({ type: 'bigint' })
+  @Column({ name: 'state_id', type: 'bigint' })
   stateId: number;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ name: 'state_code', type: 'varchar', length: 255 })
   stateCode: string;
 
-  @Column({ type: 'bigint' })
+  @Column({ name: 'country_id', type: 'bigint' })
   countryId: number;
 
-  @Column({ type: 'char', length: 2 })
+  @Column({ name: 'country_code', type: 'char', length: 2 })
   countryCode: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 8 })
@@ -31,10 +31,10 @@ export class City {
   @Column({ type: 'varchar', length: 255, nullable: true })
   timezone: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
   @Column({ type: 'smallint', default: 1 })
@@ -45,10 +45,10 @@ export class City {
 
 
   @ManyToOne(() => State, state => state.cities)
-  @JoinColumn({ name: 'stateId' })
+  @JoinColumn({ name: 'state_id' })
   state: State;
 
   @ManyToOne(() => Country)
-  @JoinColumn({ name: 'countryId' })
+  @JoinColumn({ name: 'country_id' })
   country: Country;
 }

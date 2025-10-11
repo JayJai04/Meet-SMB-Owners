@@ -13,6 +13,9 @@ import { LocationsModule } from './locations/locations.module'
 import { City } from './locations/entities/city.entity'
 import { State } from './locations/entities/state.entity'
 import { Country } from './locations/entities/country.entity'
+import { PostsModule } from './posts/posts.module'
+import { IncidentReport } from './posts/entities/incident-report.entity'
+import { EventAnnouncement } from './posts/entities/event-announcement.entity'
 
 @Module({
   imports: [
@@ -32,8 +35,8 @@ import { Country } from './locations/entities/country.entity'
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
-        entities: [User, Group, GroupMember, City, State, Country], // <-- Here is where we tell TypeORM about our entities
-        synchronize: true, // For development, this auto-creates tables based on entities.
+        entities: [User, Group, GroupMember, City, State, Country, IncidentReport, EventAnnouncement], // <-- Here is where we tell TypeORM about our entities
+        synchronize: false, // Disabled to avoid schema conflicts with imported data
       }),
     }),
 
@@ -41,7 +44,8 @@ import { Country } from './locations/entities/country.entity'
     UsersModule,
     GroupsModule,
     AuthModule,
-    LocationsModule
+    LocationsModule,
+    PostsModule
   ],
   controllers: [AppController],
   providers: [AppService],

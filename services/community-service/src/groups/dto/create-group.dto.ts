@@ -1,8 +1,8 @@
-import { IsString, MinLength} from 'class-validator';
+import { IsString, MinLength, IsNumber} from 'class-validator';
 
 export class CreateGroupDto {
-  @IsString()
-  readonly cityId: string;
+  @IsNumber()
+  readonly cityId: number;
 
   @IsString()
   @MinLength(8)

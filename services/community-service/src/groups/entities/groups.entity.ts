@@ -11,8 +11,11 @@ import { GroupMember } from './group-members.entity';
     @Column({ type: 'varchar', length: 255, nullable: false, unique: true })
     groupName: string;
 
+    @Column({ type: 'bigint', nullable: false })
+    cityId: number;
+
     @Column({ type: 'uuid', nullable: false })
-    cityId: string;
+    adminId: string;
   
     @ManyToOne(() => User, { nullable: false })
     @JoinColumn({ name: 'adminId' })

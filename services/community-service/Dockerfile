@@ -22,3 +22,9 @@ EXPOSE 3000
 
 # Command to run the application
 CMD ["npm", "run", "start:dev"]
+
+# PRODUCTION CONFIGURATION (commented out for development)
+# Uncomment the following lines for production deployment:
+# RUN npm ci --only=production && npm cache clean --force
+# RUN npm run build
+# CMD ["node", "dist/main"]

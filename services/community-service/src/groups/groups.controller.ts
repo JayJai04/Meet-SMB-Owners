@@ -25,6 +25,12 @@ export class GroupsController {
         return this.groupsService.getUserGroups(user.id);
     }
 
+    @Get(':groupId')
+    @UseGuards(JwtAuthGuard)
+    async getGroupById(@Param('groupId') groupId: string): Promise<any> {
+        return this.groupsService.getGroupById(groupId);
+    }
+
     @Get(':groupId/members')
     @UseGuards(JwtAuthGuard)
     async getGroupMembers(@Param('groupId') groupId: string): Promise<GroupMember[]> {
