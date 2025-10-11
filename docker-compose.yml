@@ -45,3 +45,29 @@ services:
       JWT_PASSWORD: ${JWT_PASSWORD}
     volumes:
       - ./services/community-service:/usr/src/app
+
+  feed-service:
+    build:
+      context: ./services/feed-service
+      dockerfile: Dockerfile
+    ports:
+      - '3001:3001'
+    depends_on:
+      - community-service
+    environment:
+      COMMUNITY_SERVICE_URL: http://community-service:3000
+    volumes:
+      - ./services/feed-service:/usr/src/app
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - '3002:3002'
+    depends_on:
+      - community-service
+    environment:
+      REACT_APP_API_URL: http://localhost:3000
+    volumes:
+      - ./frontend:/usr/src/app

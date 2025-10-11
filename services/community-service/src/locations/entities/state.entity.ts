@@ -10,19 +10,19 @@ export class State {
   @Column({ type: 'varchar', length: 255 })
   name: string;
 
-  @Column({ type: 'bigint' })
+  @Column({ name: 'country_id', type: 'bigint' })
   countryId: number;
 
-  @Column({ type: 'char', length: 2 })
+  @Column({ name: 'country_code', type: 'char', length: 2 })
   countryCode: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ name: 'fips_code', type: 'varchar', length: 255, nullable: true })
   fipsCode: string;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   iso2: string;
 
-  @Column({ type: 'varchar', length: 10, nullable: true })
+  @Column({ name: 'iso3166_2', type: 'varchar', length: 10, nullable: true })
   iso31662: string;
 
   @Column({ type: 'varchar', length: 191, nullable: true })
@@ -31,7 +31,7 @@ export class State {
   @Column({ type: 'int', nullable: true })
   level: number;
 
-  @Column({ type: 'bigint', nullable: true })
+  @Column({ name: 'parent_id', type: 'bigint', nullable: true })
   parentId: number;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
@@ -46,10 +46,10 @@ export class State {
   @Column({ type: 'varchar', length: 255, nullable: true })
   timezone: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
   @Column({ type: 'smallint', default: 1 })
@@ -59,7 +59,7 @@ export class State {
   wikiDataId: string;
 
   @ManyToOne(() => Country, country => country.states)
-  @JoinColumn({ name: 'countryId' })
+  @JoinColumn({ name: 'country_id' })
   country: Country;
 
   @OneToMany(() => City, city => city.state)

@@ -8,14 +8,22 @@ import { Country } from './entities/country.entity';
 export class LocationsController {
   constructor(private readonly locationsService: LocationsService) {}
 
-  @Get('cities/:id')
-  async getCityById(@Param('id', ParseIntPipe) id: number): Promise<City | null> {
-    return this.locationsService.findCityById(id);
+  @Get('cities')
+  async getAllCities(@Query('search') search?: string): Promise<City[]> {
+    if (search) {
+      return this.locationsService.searchCities(search);
+    }
+    return this.locationsService.getAllCities();
   }
 
   @Get('cities/search')
   async searchCities(@Query('q') query: string): Promise<City[]> {
     return this.locationsService.searchCities(query);
+  }
+
+  @Get('cities/:id')
+  async getCityById(@Param('id', ParseIntPipe) id: number): Promise<City | null> {
+    return this.locationsService.findCityById(id);
   }
 
   @Get('cities/by-state/:stateCode')

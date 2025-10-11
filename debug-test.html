@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration Debug Test</title>
+</head>
+<body>
+    <h1>Registration Debug Test</h1>
+    <div id="status"></div>
+    <button onclick="testCities()">Test Cities API</button>
+    <button onclick="testRegistration()">Test Registration</button>
+    
+    <script>
+        const API_BASE_URL = 'http://localhost:3000';
+        
+        async function testCities() {
+            const status = document.getElementById('status');
+            status.innerHTML = 'Testing cities API...';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/locations/cities`);
+                const data = await response.json();
+                status.innerHTML = `Cities API Success: Found ${data.length} cities. First city: ${data[0]?.name}`;
+            } catch (error) {
+                status.innerHTML = `Cities API Error: ${error.message}`;
+            }
+        }
+        
+        async function testRegistration() {
+            const status = document.getElementById('status');
+            status.innerHTML = 'Testing registration...';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: 'debug@test.com',
+                        password: 'password123',
+                        cityId: 1
+                    })
+                });
+                
+                const data = await response.json();
+                if (response.ok) {
+                    status.innerHTML = `Registration Success: User created with ID ${data.user.id}`;
+                } else {
+                    status.innerHTML = `Registration Error: ${data.message}`;
+                }
+            } catch (error) {
+                status.innerHTML = `Registration Error: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>

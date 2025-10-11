@@ -79,6 +79,17 @@ export class LocationsService {
     });
   }
 
+  // Get all cities (with pagination for performance)
+  async getAllCities(limit: number = 100): Promise<City[]> {
+    return this.citiesRepository
+      .createQueryBuilder('city')
+      .leftJoinAndSelect('city.state', 'state')
+      .leftJoinAndSelect('city.country', 'country')
+      .orderBy('city.name', 'ASC')
+      .limit(limit)
+      .getMany();
+  }
+
   // Search methods for autocomplete
   async searchCities(query: string, limit: number = 10): Promise<City[]> {
     return this.citiesRepository
@@ -88,7 +99,16 @@ export class LocationsService {
       .where('LOWER(city.name) LIKE LOWER(:query)', { query: `%${query}%` })
       .orWhere('LOWER(state.name) LIKE LOWER(:query)', { query: `%${query}%` })
       .orWhere('LOWER(country.name) LIKE LOWER(:query)', { query: `%${query}%` })
-      .orderBy('city.name', 'ASC')
+      .orderBy(
+        `CASE 
+          WHEN LOWER(city.name) LIKE LOWER(:startsWithQuery) THEN 1
+          WHEN LOWER(state.name) LIKE LOWER(:startsWithQuery) THEN 2
+          ELSE 3
+        END`,
+        'ASC'
+      )
+      .addOrderBy('city.name', 'ASC')
+      .setParameter('startsWithQuery', `${query}%`)
       .limit(limit)
       .getMany();
   }
