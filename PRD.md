@@ -3,9 +3,8 @@
 
 - **Version:** 1.0
 - **Status:** Finalized for V1 Development
-- **Author:** Gemini (Tech Lead), Junior Engineer
+- **Author:** Jay
 - **Last Updated:** September 12, 2025
-
 **1. Introduction & Vision**
 
 **Vision:** To become the essential, trusted communication network for local Small-to-Medium-Sized Businesses (SMBs) in every community.
